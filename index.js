@@ -2,7 +2,7 @@ import { argv } from 'node:process';
 import randomColor from 'randomcolor';
 
 // Pattern to match grid size user input
-const GRID_PATTERN = new RegExp('\\d{1,2}x\\d{1,2}');
+const gridPattern = new RegExp('\\d{1,2}x\\d{1,2}');
 
 // Determine random color and grid size based on user input
 let color;
@@ -10,7 +10,7 @@ let width = 31;
 let height = 9;
 if (argv.length >= 5) {
   const gridSize = argv[2];
-  if (gridSize.match(GRID_PATTERN)) {
+  if (gridSize.match(gridPattern)) {
     const sliceIndex = gridSize.indexOf('x');
     width = gridSize.slice(0, sliceIndex);
     height = gridSize.slice(sliceIndex + 1, gridSize.length);
@@ -43,7 +43,7 @@ console.log(
   buildColorGrid(color, width, height),
 );
 
-function buildColorGrid(color, width, height) {
+function buildColorGrid(gridColor, gridWidth, gridHeight) {
   // ***** Input check *****
 
   // Input constraints:
@@ -53,44 +53,44 @@ function buildColorGrid(color, width, height) {
   const minHeight = 5;
 
   // Check if width is within constraints and correct if necessary
-  if (width < minWidth) {
+  if (gridWidth < minWidth) {
     console.log(
-      `Warning: Width of ${width} is to small. Using minimum width of ${minWidth} instead.`,
+      `Warning: Width of ${gridWidth} is to small. Using minimum width of ${minWidth} instead.`,
     );
-    width = minWidth;
-  } else if (width % 2 === 0) {
-    width = width - 1;
+    gridWidth = minWidth;
+  } else if (gridWidth % 2 === 0) {
+    gridWidth = gridWidth - 1;
     console.log(
-      `Warning: Width has to be uneven. Using width of ${width} instead.`,
+      `Warning: Width has to be uneven. Using width of ${gridWidth} instead.`,
     );
   }
 
   // Check if height is within constraints and correct if necessary
-  if (height < minHeight) {
+  if (gridHeight < minHeight) {
     console.log(
-      `Warning: Height of ${height} is to small. Using minimum height of ${minHeight} instead.`,
+      `Warning: Height of ${gridHeight} is to small. Using minimum height of ${minHeight} instead.`,
     );
-    height = minHeight;
-  } else if (height % 2 === 0) {
-    height = height - 1;
+    gridHeight = minHeight;
+  } else if (gridHeight % 2 === 0) {
+    gridHeight = gridHeight - 1;
     console.log(
-      `Warning: Height has to be uneven. Using height of ${height} instead.`,
+      `Warning: Height has to be uneven. Using height of ${gridHeight} instead.`,
     );
   }
   // ***** End of input check *****
 
   // Calculate color grid
   let fill = '';
-  for (let i = 0; i < (height - 3) / 2; i++) {
-    fill = fill + '#'.repeat(width) + '\n';
+  for (let i = 0; i < (gridHeight - 3) / 2; i++) {
+    fill = fill + '#'.repeat(gridWidth) + '\n';
   }
 
-  let border = '#' + ' '.repeat(width - 2) + '#\n';
-  let colorInfo =
+  const border = '#' + ' '.repeat(gridWidth - 2) + '#\n';
+  const colorInfo =
     '#' +
-    ' '.repeat((width - 9) / 2) +
-    color +
-    ' '.repeat((width - 9) / 2) +
+    ' '.repeat((gridWidth - 9) / 2) +
+    gridColor +
+    ' '.repeat((gridWidth - 9) / 2) +
     '#\n';
 
   const grid = fill + border + colorInfo + border + fill;
